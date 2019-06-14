@@ -1,21 +1,20 @@
-import React from 'react'
-// import Button from 'antd/lib/button'
-// import 'antd/dist/antd.css'
-//推送远程dev分支111122222222333333344444
+import React,{Component} from 'react'
 import {HashRouter,Route,Switch} from 'react-router-dom'
-import Longin from './pages/login/Login'
-import Admin from './pages/admin/Admin'
 
+import Login from './pages/login/Login.jsx'
+import Admin from './pages/admin/Admin.jsx'
 
-export default class App extends React.Component{
+export default class App extends Component{
     render(){
         return(
-           <HashRouter>
-               <Switch>
-                   <Route path='/' component={Longin} />
-                   <Route path='/admin' component={Admin} />
-               </Switch>
-           </HashRouter>
+            <HashRouter>
+                <Switch>
+                    {/* <div>asdasd</div> */}
+                    <Route path='/' component={Login}/>
+                    <Route path='/admin' component={Admin}/>
+                </Switch>
+            </HashRouter>
         )
     }
 }
+
