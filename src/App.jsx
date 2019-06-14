@@ -1,7 +1,6 @@
 import React from 'react'
 // import Button from 'antd/lib/button'
 // import 'antd/dist/antd.css'
-// import { Button } from 'antd'
 import {HashRouter,Route,Switch} from 'react-router-dom'
 import Longin from './pages/login/Login'
 import Admin from './pages/admin/Admin'
