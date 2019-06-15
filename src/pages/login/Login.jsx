@@ -27,7 +27,7 @@ class Login extends Component{
             callback('密码不能小于4位')
         } else if(value.length>12){
             callback('密码长度不能大于12位')
-        } else if(!/^[a-zA-Z0-9_]+$/){
+        } else if(!/^[a-zA-Z0-9_]+$/.test(value)){
             callback('必须为英文，数组，下划线开头')
         } else {
             callback()
