@@ -10,6 +10,7 @@ export default function ajax(url,data={},method='GET'){
         }
         Promise.then(
             (response)=>{
+                console.log(response)
                 resolve(response.data)
             },
             (err)=>{
