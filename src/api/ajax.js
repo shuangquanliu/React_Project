@@ -2,13 +2,13 @@ import axios from "axios";
 
 export default function ajax(url,data={},method='GET'){
     return new Promise ((resolve,reject)=>{
-        let Promise
+        let promise
         if(method === 'GET'){
-            Promise = axios.get(url,{params:data})
+            promise = axios.get(url,{params:data})
         } else {
-            Promise = axios.post(url,data)
+            promise = axios.post(url,data)
         }
-        Promise.then(
+        promise.then(
             (response)=>{
                 console.log(response)
                 resolve(response.data)

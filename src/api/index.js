@@ -7,9 +7,9 @@ const BASE = ''
 }
  */
 
-export const reqLogin = (username,Password)=>ajax(BASE+'/login',{username:'admin',Password:'admin'},'POST')
+export const reqLogin = (username,password)=>ajax(BASE+'/login',{username,password},'POST')
 
-// 简单测试一下
+
 reqLogin('admin', 'admin').then(result => {
     console.log('result', result)
   })
