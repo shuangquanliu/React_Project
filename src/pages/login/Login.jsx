@@ -10,7 +10,7 @@ class Login extends Component{
     //   const userName = getFieldValue('userName')
     //   const passWord = getFieldValue('passWord')
     //   const values = this.props.form.getFieldsValue()
-    //   console.log(userName,passWord,values)
+    //   console.log(userName,passWord,values)111git 12e1 2e1 2eqwd qdqd q 
     this.props.form.validateFields((err, values) => {
         if (!err) {
           console.log('验证提交发送ajax请求 ', values);
