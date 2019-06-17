@@ -1,10 +1,11 @@
 import React,{Component} from 'react'
-import logo from './images/logo.png'
+import logo from '../../assets/images/logo.png'
 import {Redirect} from 'react-router-dom'
 import { Form, Icon, Input, Button,message} from 'antd'
 import './Login.less'
 import { reqLogin } from '../../api';
 import memoryUtils from '../../utils/memoryUtils'
+import {setstore} from '../../utils/storeUtils'
 
  class Login extends Component {
     handerPWD=(rule,value='',callback)=>{
@@ -30,7 +31,7 @@ import memoryUtils from '../../utils/memoryUtils'
                 const result = await reqLogin(values.username,values.password)
              if(result.status === 0){
                 // 存入local storage中
-                localStorage.setItem('USER-KEY',JSON.stringify(result.data))
+                setstore(result.data)
                 // 存入内存中
                 memoryUtils.user = result.data
 
