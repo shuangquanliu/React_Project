@@ -198,3 +198,5 @@
     多行注释: ctrl + shift + /
     显示所有命令: ctrl + 1
     查找要打开的文件: ctrl + E
+
+## Storage 
