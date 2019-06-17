@@ -12,7 +12,7 @@ export default function ajax (url,data={},method='GET'){
         }
         promise.then(
             response=>{
-                console.log(response)
+               
                 resolve(response.data)
             },
             err=>{

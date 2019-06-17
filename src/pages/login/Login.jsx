@@ -1,7 +1,10 @@
 import React,{Component} from 'react'
 import logo from './images/logo.png'
-import { Form, Icon, Input, Button } from 'antd'
+import {Redirect} from 'react-router-dom'
+import { Form, Icon, Input, Button,message} from 'antd'
 import './Login.less'
+import { reqLogin } from '../../api';
+import memoryUtils from '../../utils/memoryUtils'
 
  class Login extends Component {
     handerPWD=(rule,value='',callback)=>{
@@ -21,14 +24,29 @@ import './Login.less'
     handleSubmit=(e)=>{
         e.preventDefault()
         const { validateFields } = this.props.form;
-        validateFields((err,values)=>{
+        validateFields(async (err,values)=>{
             if(!err){
-                console.log('登录成功',values)
+                // console.log('登录成功',values)
+                const result = await reqLogin(values.username,values.password)
+             if(result.status === 0){
+                // 存入local storage中
+                localStorage.setItem('USER-KEY',JSON.stringify(result.data))
+                // 存入内存中
+                memoryUtils.user = result.data
+
+                // 跳转到admin中
+                this.props.history.replace('/')
+             } else {
+                message.error(result.msg, 2)
+             }
             }
         })
     }
     render(){
         const { getFieldDecorator } = this.props.form;
+        if(memoryUtils.user._id){
+            return <Redirect to ='/'/>
+        }
         return (
             <div className='login'>
                 <header className = 'login-header'>
@@ -81,3 +99,5 @@ import './Login.less'
 
  const WrappedNormalLoginForm = Form.create()(Login);
  export default WrappedNormalLoginForm
+
+ 
