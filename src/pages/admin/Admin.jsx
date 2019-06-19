@@ -18,7 +18,7 @@ const { Footer, Sider, Content } = Layout;
 export default class Admin extends Component {
     render(){
         const user =  memoryUtils.user
-        console.log(user)
+      
         if(!user._id){
             return <Redirect to='/login'/>
         }
