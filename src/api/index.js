@@ -31,6 +31,9 @@ export const reqUpdateStatus = (productId,status)=> ajax(BASE+'/manage/product/u
 
 
 
+// 添加分类
+export const reqAddCategory = (categoryName, parentId) => ajax(BASE + '/manage/category/add', {categoryName, parentId}, 'POST')
+
 /* 
 发jsonp请求获取当前天气信息
 */
