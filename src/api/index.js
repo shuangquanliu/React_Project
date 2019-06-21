@@ -15,6 +15,9 @@ export const reqUpdateCategory = ({categoryId, categoryName}) => ajax(BASE + '/m
 //获取商品信息
 export const reqProducts =({pageNum,pageSize})=> ajax(BASE+'/manage/product/list',{pageNum,pageSize},'GET')
 
+// 根据分类ID获取分类
+export const reqCategorya = (categoryId) => ajax(BASE + '/manage/category/info', {categoryId})
+
 //搜索商品信息
 export const reqSearchProducts = ({
   pageNum,

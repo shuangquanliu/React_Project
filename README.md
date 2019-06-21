@@ -97,21 +97,25 @@
             
 ## 2. 高阶函数与高阶组件
     1. 高阶函数
-        1). 一类特别的函数
-            a. 接受函数类型的参数
-            b. 返回值是函数
-        2). 常见
-            a. 定时器: setTimeout()/setInterval()
-            b. Promise: Promise(() => {}) then(value => {}, reason => {})
-            c. 数组遍历相关的方法: forEach()/filter()/map()/reduce()/find()/findIndex()
-            d. 函数对象的bind()
-            e. Form.create()() / getFieldDecorator()()
-        3). 高阶函数更新动态, 更加具有扩展性
+1). 一类特别的函数
+    a. 接受函数类型的参数
+    b. 返回值是函数
+2). 常见
+    a. 定时器: setTimeout()/setInterval()
+    b. Promise: Promise(() => {}) then(value => {}, reason => {})
+    c. 数组遍历相关的方法: forEach()/filter()/map()/reduce()/find()/findIndex()
+    d. 函数对象的bind()
+    e. Form.create()() / getFieldDecorator()()
+3). 高阶函数更新动态, 更加具有扩展性
     
     2. 高阶组件
         1). 本质就是一个函数
         2). 接收一个组件(被包装组件), 返回一个新的组件(包装组件), 包装组件会向被包装组件传入特定属性
-        3). 大概实现
+        3). 常见的高阶组件
+            react-router-dom库: withRouter(非路由组件)
+            antd组件库: Form.create()(Form组件)
+            react-reudx库: connect()(UI组件)
+        4). 大概实现
             function higherOrderComponent(Component) {
                 const form = {
                     validateFields () {},
@@ -126,7 +130,7 @@
                     }
                 }
             }
-        4). 作用: 扩展组件的功能
+        5). 作用: 扩展组件的功能
         
     3. 高阶组件与高阶函数的关系
         高阶组件是特别的高阶函数: 接收一个组件函数, 返回是一个新的组件函数
@@ -174,29 +178,237 @@
             await所在函数(最近的)定义的左侧写async
 
 # day03
-## 功能实现
-    1. 登陆成功后, 跳转到admin界面, 显示登陆的用户名 
-    2. 访问admin界面, 如果没有登陆, 自动跳转到登陆界面
-    3. 在刷新时, 如果已经登陆, 保持登陆
-    4. 自动/免登陆
-    5. 访问login界面, 如果已经登陆, 自动跳转到admin
+## 1. 实现登陆(包含自动登陆)
+    小功能点实现:
+        1. 登陆成功后, 跳转到admin界面, 显示登陆的用户名 
+        2. 访问admin界面, 如果没有登陆, 自动跳转到登陆界面
+        3. 在刷新时, 如果已经登陆, 保持登陆
+        4. 自动/免登陆
+        5. 访问login界面, 如果已经登陆, 自动跳转到admin
+    login.jsx
+        1). 调用登陆的接口请求
+        2). 如果失败, 显示错误提示信息
+        3). 如果成功了:
+            保存user到local/内存中
+            跳转到admin
+        4). 如果内存中的user有值, 自动跳转到admin
+    src/index.js
+        读取local中user到内存中保存
+    admin.jsx
+        判断如果内存中没有user(_id没有值), 自动跳转到login
+    storageUtils.js
+        包含使用localStorage来保存user相关操作的工具模块
+        使用第三库store
+            简化编码
+            兼容不同的浏览器
+    memoryUtils.js
+        用来在内存中保存数据(user)的工具类
+
+    路由跳转方式
+        1. 通过点击路由链接  ===> 声明式路由跳转
+            <Link to="/xxx"> Xxx</Link>
+        2. 在点击回调函数中执行:  ===> 编程式路由跳转
+            this.props.history.push/replace('/xxx')
+        3. 在render()中自动跳转路由
+            return <Redirect to="/xxx">
+        
+## 4. 搭建admin的整体界面结构
+    1). 整体布局使用antd的Layout组件
+    2). 拆分组件
+        LeftNav: 左侧导航
+        Header: 右侧头部
+    3). 子路由
+        定义路由组件
+        注册路由
+        
+## 3. LeftNav组件
+    1). 使用antd的组件
+        Menu / Item / SubMenu
+    
+    2). 使用react-router
+        withRouter(): 包装非路由组件, 给其传入history/location/match属性
+        history: push()/replace()/goBack()
+        location: pathname属性
+        match: params属性
+    
+    3). componentWillMount与componentDidMount的比较
+        componentWillMount: 在第一次render()前调用一次, 为第一次render()准备数据(同步)
+        componentDidMount: 在第一次render()之后调用一次, 启动异步任务, 后面异步更新状态重新render
+    
+    4). 根据动态生成Item和SubMenu的数组
+        map() + 递归: 多级菜单列表
+        reduce() + 递归: 多级菜单列表
+    
+    5). 2个问题?
+        刷新时, 如何选中对应的菜单项?
+            selectedKey是当前请求的path
+        刷新时, 如何默认展开对应的Submenu?
+            openKey是 一级列表项的某个子菜单项是当前对应的菜单项
 
 
-
-## 实现路由跳转
-    1. 通过点击路由链接
-        <Link to="/xxx"> Xxx</Link>
-    2. 在点击回调函数中执行:
-        this.props.history.push/replace('/xxx')
-    3. 在render()中自动跳转路由
-        return <Redirect to="/xxx">
-
-
-## 快捷键
+## 4. 快捷键
     删除一行: ctrl + D
     单行注释: ctrl + /
     多行注释: ctrl + shift + /
     显示所有命令: ctrl + 1
     查找要打开的文件: ctrl + E
 
-## Storage 
+# day04
+## 1. Header组件
+    1). 界面静态布局
+        三角形效果
+    2). 获取登陆用户的名称显示
+        memoryUtils
+    3). 当前时间
+        循环定时器, 每隔1s更新当前时间状态
+        格式化指定时间: dateUtils
+    4). 天气预报
+        使用jsonp库发jsonp请求百度天气预报接口
+        对jsonp请求的理解
+    5). 当前导航项的标题
+        得到当前请求的路由path: withRouter()包装非路由组件
+        根据path在menuList中遍历查找对应的item的title
+    6). 退出登陆
+        Modal组件显示提示
+        清除保存的user
+        跳转到login
+    7). 抽取通用的类链接按钮组件: LinkButton
+        通过...透传所有接收的属性: <button {...props} />   <LinkButton onClick={}>xxxx</LinkButton>
+        组件标签的所有子节点都会成为组件的children属性
+        
+## 2. jsonp解决ajax跨域的原理
+    1). jsonp只能解决GET类型的ajax请求跨域问题
+    2). jsonp请求不是ajax请求, 而是一般的get请求
+    3). 基本原理
+        浏览器端:
+            动态生成<script>来请求后台接口(src就是接口的url)
+            定义好用于接收响应数据的函数(fn), 并将函数名通过请求参数提交给后台(如: callback=fn)
+        服务器端:
+            接收到请求处理产生结果数据后, 返回一个函数调用的js代码, 并将结果数据作为实参传入函数调用
+        浏览器端:
+            收到响应自动执行函数调用的js代码, 也就执行了提前定义好的回调函数, 并得到了需要的结果数据
+
+## 3. Category分类管理组件
+### 1). 使用antd组件构建分类列表界面
+    Card
+    Table
+    Button
+    Icon
+        
+### 2). 相关接口请求函数
+    获取一级/二级分类列表
+        
+### 4). 异步显示一级分类列表    
+    设计一级分类列表的状态: categorys
+    异步获取一级分类列表: componentDidMount(){}
+    更新状态, 显示
+
+### 4). 显示二级分类列表
+    设计状态: subCategorys / parentId / parentName
+    显示二级分类列表: 根据parentId状态值, 异步获取分类列表
+    setState()的问题
+        setState()更新状态是异步更新的, 直接读取状态值还是旧的状态值
+        setState({}, [callback]), 回调函数是在状态更新且界面更新之后执行, 可以在此获取最新的状态
+
+# day05
+
+## 1. 更新分类
+    1). 界面
+        antd组件: Modal, Form, Input
+        显示/隐藏: showStatus状态为1/0
+    2). 功能
+        父组(Category)件得到子组件(AddForm)的数据(form)
+        调用更新分类的接口
+        重新获取分类列表
+
+    3). 受控组件
+        实时获动态获取input框的内容：
+        antd 中Input与Select 区别
+        <Input 
+            placeholder='关键字'
+            style = {{margin:'0 15px',width:150}}
+            value={searchName}
+            onChange={event => this.setState({searchName:event.target.value})}
+            >
+        </Input>
+
+        <Select 
+            value={searchType}
+            onChange = {value => this.setState({searchType: value})} 
+            style={{width:150}}
+            >
+            <Option value='productName'>按名称搜索 </Option>
+            <Option value='productDesc'>按描述搜索 </Option>
+        </Select>
+
+        非受控组件
+        
+
+## 2. 添加分类
+    1). 界面
+        antd组件: Modal, Form, Select, Input
+        显示/隐藏: showStatus状态为1/0
+        一级分类的下拉列表
+        默认显示当前对应的分类项
+    2). 功能
+        父组(Category)件得到子组件(AddForm)的数据(form)
+        调用添加分类的接口
+        重新获取分类列表
+    3). 更新分类后是否需要重新获取列表
+        a. 当前显示一级列表, 添加一级分类  ==> 需要重新获取当前列表
+        b. 当前显示一级列表, 添加某个二级分类  ==> 不需要重新获取   
+        c. 当前显示某个二级列表, 添加当前二级分类 ==> 需要重新获取当前列表
+        d. 当前显示某个二级列表, 添加一级分类 ==> 需要重新获取一级列表
+        e. 当前显示某个二级列表, 添加另一个一级分类的二级分类 ==> 不需要重新获取
+
+## 3. Product整体路由
+    1). 配置子路由: 
+        ProductHome / ProductDetail / ProductAddUpdate
+        <Route> / <Switch> / <Redirect>
+    
+    2). 匹配路由的逻辑:
+        模糊匹配(默认): 开头的部分是否一致   请求路径: /product/xxx
+        精确匹配(exact属性): 完全一致    请求路径: /product
+        <Route path='/product' component={ProductHome}/>
+        
+## 4. 分页实现技术(2种)
+    1). 前台分页
+        请求获取数据: 一次获取所有数据, 翻页时不需要再发请求
+        请求接口: 
+            不需要指定请求参数: 页码(pageNum)和每页数量(pageSize)
+            响应数据: 所有数据的数组
+    
+    2). 基于后台的分页
+        请求获取数据: 每次只获取当前页的数据, 翻页时要发请求
+        请求接口: 
+            需要指定请求参数: 页码(pageNum)和每页数量(pageSize)
+            响应数据: 当前页数据的数组 + 总记录数(total)
+    
+    3). 如何选择?
+        基本根据数据多少来选择
+
+## 5. 分页显示
+    界面: <Card> / <Table> / Select / Icon / Input / Button
+    状态: products / total
+    接口请求函数需要的数据: pageNum, pageSize
+    异步获取第一页数据显示
+        调用分页的接口请求函数, 获取到当前页的products和总记录数total
+        更新状态: products / total
+    翻页:
+        绑定翻页的监听, 监听回调需要得到pageNum
+        异步获取指定页码的数据显示  
+     
+## 6. 搜索分页
+    接口请求函数需要的数据: 
+        pageSize: 每页的条目数
+        pageNum: 当前请求第几页 (从1开始)
+        productDesc / productName: searchName 根据商品描述/名称搜索
+    状态:  searchType / searchName  / 在用户操作时实时收集数据
+    异步搜索显示分页列表
+        如果searchName有值, 调用搜索的接口请求函数获取数据并更新状态
+        
+## 7. 更新商品的状态
+    初始显示: 根据product的status属性来显示  status = 1/2
+    点击切换:
+        绑定点击监听
+        异步请求更新状态
