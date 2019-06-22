@@ -7,7 +7,7 @@ const BASE = ''
 export const reqLogin = (username,password)=> ajax(BASE+'/login',{username,password},'POST')
 
 //获取分类列表（一级/耳机）
-export const reqCategory = (parentId)=> ajax(BASE+'manage/category/list',{parentId})
+export const reqCategory = (parentId)=> ajax(BASE+'/manage/category/list',{parentId})
 
 // 更新分类的名称
 export const reqUpdateCategory = ({categoryId, categoryName}) => ajax(BASE + '/manage/category/update',{categoryId, categoryName}, 'POST')
@@ -36,6 +36,11 @@ export const reqUpdateStatus = (productId,status)=> ajax(BASE+'/manage/product/u
 
 // 添加分类
 export const reqAddCategory = (categoryName, parentId) => ajax(BASE + '/manage/category/add', {categoryName, parentId}, 'POST')
+
+
+
+// 删除图片
+export const reqDeleteImg = (name) => ajax(BASE + '/manage/img/delete', {name}, 'POST')
 
 /* 
 发jsonp请求获取当前天气信息

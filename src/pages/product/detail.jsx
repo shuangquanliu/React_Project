@@ -96,14 +96,14 @@ export default class ProductDetail extends Component {
             <span className="detail-left">商品图片:</span>
             <span>
               {
-                imgs.map(img => <img src={BASE_IMG_URL + img} key={img} style={{width: 150, height: 150}}></img>)
+                imgs.map(img => <img src={BASE_IMG_URL + img} key={img} style={{width: 150, height: 150}} alt='imgs'></img>)
               }
             </span>
           </List.Item>
           <List.Item>
             <span className="detail-left">商品详情:</span>
             <div dangerouslySetInnerHTML={{ __html: detail }}></div>
-          </List.Item>
+          </List.Item> 
         </List>
       </Card>
     )
