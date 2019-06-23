@@ -42,8 +42,6 @@ export const reqAddCategory = (categoryName, parentId) => ajax(BASE + '/manage/c
 // 删除图片
 export const reqDeleteImg = (name) => ajax(BASE + '/manage/img/delete', {name}, 'POST')
 
-<<<<<<< HEAD
-=======
 //添加和更新商品
 
 export const reqAddOrUpdateProduct = (product) => ajax(BASE + '/manage/product/'+ (product._id ? 'update' : 'add'), product, 'POST')
@@ -51,7 +49,6 @@ export const reqAddOrUpdateProduct = (product) => ajax(BASE + '/manage/product/'
 
 
 
->>>>>>> master
 /* 
 发jsonp请求获取当前天气信息
 */

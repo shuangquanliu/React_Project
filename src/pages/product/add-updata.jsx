@@ -6,15 +6,6 @@ import {
   Input,
   Button,
   Cascader,
-<<<<<<< HEAD
-} from 'antd'
-
-import LinkButton from '../../components/link-button'
-import PicturesWall from './pictures-wall'
-import RichTextEditor from './rich-text-editor'
-
-import { reqCategory } from '../../api'
-=======
   message,
 } from 'antd'
 
@@ -24,7 +15,6 @@ import RichTextEditor from './rich-text-editor'
 
 import { reqCategory,reqAddOrUpdateProduct } from '../../api'
 
->>>>>>> master
 
 const { Item } = Form
 const { TextArea } = Input
