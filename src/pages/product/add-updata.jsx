@@ -84,11 +84,7 @@ class ProductAddUpdate extends Component {
   对价格进行验证
   */
   validatePrice = (rule, value, callback) => {
-<<<<<<< HEAD
-    console.log('validatePrice', value, typeof value)
-=======
     // console.log('validatePrice', value, typeof value)
->>>>>>> master
     if (value < 0) {
       callback('价格不能小于0')
     } else {
@@ -101,12 +97,9 @@ class ProductAddUpdate extends Component {
   请求获取对应的二级列表并显示
   */
   loadData = async selectedOptions => {
-<<<<<<< HEAD
-=======
 
     
 
->>>>>>> master
     console.log('loadData()', selectedOptions)
     // 得到选中的一级项的数据对象
     const targetOption = selectedOptions[0]  // {value, label, isLeaf}
