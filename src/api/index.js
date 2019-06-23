@@ -46,7 +46,7 @@ export const reqDeleteImg = (name) => ajax(BASE + '/manage/img/delete', {name}, 
 
 export const reqAddOrUpdateProduct = (product) => ajax(BASE + '/manage/product/'+ (product._id ? 'update' : 'add'), product, 'POST')
 
-
+//获取劫色列表
 
 
 /* 
