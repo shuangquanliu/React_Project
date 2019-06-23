@@ -6,6 +6,7 @@ import {
   Input,
   Button,
   Cascader,
+<<<<<<< HEAD
 } from 'antd'
 
 import LinkButton from '../../components/link-button'
@@ -13,6 +14,17 @@ import PicturesWall from './pictures-wall'
 import RichTextEditor from './rich-text-editor'
 
 import { reqCategory } from '../../api'
+=======
+  message,
+} from 'antd'
+
+import LinkButton from '../../components/link-button'
+import PictureWall from './pictureswalls'
+import RichTextEditor from './rich-text-editor'
+
+import { reqCategory,reqAddOrUpdateProduct } from '../../api'
+
+>>>>>>> master
 
 const { Item } = Form
 const { TextArea } = Input
@@ -33,15 +45,58 @@ class ProductAddUpdate extends Component {
     this.editorRef = React.createRef()
   }
   
+<<<<<<< HEAD
   submit = () => {
     this.props.form.validateFields((err, values) => {
       if (!err) {
+=======
+  submit =() => {
+    this.props.form.validateFields(async (err, values) => {
+      if (!err) {
+        //取出输入框里的每一项的属性值作为参数因为values整个对象拿到没法用 我只要属性值
+        const {name,price,desc,categoryIds} = values
+        let categoryId, pCategoryId
+        if(categoryIds.length === 1){
+          pCategoryId = '0'
+          categoryId = categoryIds[0]
+        } else {
+          pCategoryId = categoryIds[0]
+          categoryId = categoryIds[1]
+        }
+
+>>>>>>> master
         // 读取所有上传图片文件名数组
         const imgs = this.pwRef.current.getImgs()
         // 读取富文本内容(html格式字符串)
         const detail = this.editorRef.current.getDetail()
         console.log('验证通过', values, imgs, detail)
+<<<<<<< HEAD
       }
+=======
+
+        const product = {
+          name,
+          desc,
+          price,
+          categoryId,
+          pCategoryId,
+          imgs,
+          detail,
+        }
+        //1.如果是更新,指定_id属性
+        if(this.isUpdate){
+          product._id = this.product._id
+        }
+
+        //2.请求参数准备完成之后发送请求
+        const result = await reqAddOrUpdateProduct(product)
+        if(result.status === 0){
+          message.success((this.isUpdate ? '更新' : '添加') + '商品成功')
+          this.props.history.goBack()
+        }
+      }
+       
+>>>>>>> master
     })
   }
 
@@ -49,7 +104,11 @@ class ProductAddUpdate extends Component {
   对价格进行验证
   */
   validatePrice = (rule, value, callback) => {
+<<<<<<< HEAD
     console.log('validatePrice', value, typeof value)
+=======
+    // console.log('validatePrice', value, typeof value)
+>>>>>>> master
     if (value < 0) {
       callback('价格不能小于0')
     } else {
@@ -62,6 +121,12 @@ class ProductAddUpdate extends Component {
   请求获取对应的二级列表并显示
   */
   loadData = async selectedOptions => {
+<<<<<<< HEAD
+=======
+
+    
+
+>>>>>>> master
     console.log('loadData()', selectedOptions)
     // 得到选中的一级项的数据对象
     const targetOption = selectedOptions[0]  // {value, label, isLeaf}
@@ -160,6 +225,7 @@ class ProductAddUpdate extends Component {
       } else { // 获取的二级分类列表
         return categorys // 返回值作为async函数返回的promise对象的成功的value
       }
+<<<<<<< HEAD
     }
   }
 
@@ -190,6 +256,38 @@ class ProductAddUpdate extends Component {
     } else { // 添加
       product.categoryIds = []
     }
+=======
+    }
+  }
+
+  componentWillMount () {
+    // 保存商品对象
+    this.product = this.props.location.state || {}
+    // 保存是否是更新的标识
+    this.isUpdate = !!this.product._id
+  }
+
+
+  componentDidMount () {
+    // 获取一级分类列表显示
+    this.getCategorys("0")
+  }
+
+  render() {
+    const { getFieldDecorator } = this.props.form
+
+    // 读取指定的product
+    const { product, isUpdate} = this
+    if (product._id) { // 修改
+      if (product.pCategoryId==='0') {
+        product.categoryIds = [product.categoryId]
+      } else {
+        product.categoryIds = [product.pCategoryId, product.categoryId]
+      }
+    } else { // 添加
+      product.categoryIds = []
+    }
+>>>>>>> master
 
     const title = (
       <span>
@@ -264,7 +362,11 @@ class ProductAddUpdate extends Component {
             
           </Item>
           <Item label="商品图片">
+<<<<<<< HEAD
             <PicturesWall ref={this.pwRef} imgs={product.imgs}/>
+=======
+            <PictureWall ref={this.pwRef} imgs= {product.imgs} />
+>>>>>>> master
           </Item>
           <Item
             label="商品详情"
