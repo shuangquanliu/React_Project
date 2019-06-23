@@ -20,10 +20,11 @@ const { SubMenu,Item }  = Menu;
                 </Item>
                 )
             } else {
-                const cItem = item.children.find((cItem, index) => cItem.key===path)
-                    if (cItem) { // 当前请求的是某个二级菜单路由
-                    this.openKey = item.key
-                    }
+                  // 如果请求的是当前item的children中某个item对应的path, 当前item的key就是openKey
+                const cItem = item.children.find((cItem, index) => path.indexOf(cItem.key)===0)
+                if (cItem) { // 当前请求的是某个二级菜单路由
+                this.openKey = item.key
+                }
                 return(
                     <SubMenu
                         key={item.key}
@@ -46,8 +47,12 @@ const { SubMenu,Item }  = Menu;
         this.menuNodes = this.getMenuNodes(menuList)
     }
     render() {
+        
         // 将请求的路由路径作为选中的key
-        const selectedKey = this.props.location.pathname
+        let selectedKey = this.props.location.pathname
+        if (selectedKey.indexOf('/product')===0) {
+        selectedKey = '/product'
+        }
         // 得到要展开Submenu的key值
         const openKey = this.openKey
         return (

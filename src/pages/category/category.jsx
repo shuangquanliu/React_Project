@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
 import {Card,Table ,Button,Icon,Modal,message} from 'antd'
-import {reqCategory,reqUpdateCategory} from '../../api/index'
+import {reqCategory,reqUpdateCategory,reqAddCategory} from '../../api/index'
 
 import LinkButton from '../../components/link-button'
 import UpdateForm from './update-from'
-
+import AddForm from './add-form'
   
   
   
@@ -20,11 +20,16 @@ export default class Category extends Component {
   }
 
   /* 
-  显示一级列表
+   获取一级或者二级列表显示
+    
+   pId: 可能不会传, 如果没有指定用state中的parentId
   */
-  getCategorys=async()=>{
+  getCategorys=async(pId)=>{
+    //发请求前，显示laoding
     this.setState({loading:true})
-    const {parentId} = this.state
+
+    const parentId = pId || this.state.parentId
+    
     const result = await reqCategory(parentId)
     this.setState({loading:false})
     
@@ -144,6 +149,36 @@ export default class Category extends Component {
     })
   }
 
+
+  addCategory=  ()=>{
+  
+    this.form.validateFields(async (err,values)=>{
+      if(!err){
+        this.setState({
+          showStatus:0
+        })
+        
+        //获取输入的数据
+        const {categoryName,parentId} = this.form.getFieldsValue()
+        //重置输入数据
+        this.form.resetFields()
+        //请求添加
+       
+        const result = await reqAddCategory(categoryName,parentId)
+        console.log(result.data)
+        if(result.status ===0){
+          message.success('添加分类成功')
+          if(parentId==='0'){
+            this.getCategorys('0')
+          } else if(parentId === this.state.parentId){
+            this.getCategorys()
+          }
+        }
+      }
+    })
+  }
+
+
   componentWillMount(){
     this.initColumns()
   }
@@ -151,7 +186,7 @@ export default class Category extends Component {
     this.getCategorys()
   }
     render() {
-      const {categorys,loading,parentId,subCategorys,parentName,showStatus}  = this.state
+      const { categorys, subCategorys, loading, parentId, parentName, showStatus} = this.state
 
       
       // 读取当前指定的分类
@@ -165,9 +200,9 @@ export default class Category extends Component {
           <span>{parentName}</span>
         </span>
       )
-      
+      //点击触发 跟新状态 如果需要传参数数外面必须要套一个匿名函数 否则不单机就立即执行
       const extra = (
-        <Button type='primary'>
+        <Button type='primary' onClick={()=>this.setState({showStatus: 2 })}>
           <Icon type='plus'/>
           添加
         </Button>
@@ -182,19 +217,30 @@ export default class Category extends Component {
                     dataSource={parentId==='0'?categorys:subCategorys}//数组
                     pagination = {{defaultPageSize:4,showQuickJumper:true}}
 
-                />
+                  />
 
-              <Modal
-                        title="更新分类"
-                        visible={showStatus===1}
-                        onOk={this.updateCategory}
-                        onCancel={() => {
-                          this.form.resetFields()
-                          this.setState({ showStatus: 0 })
-                        }}
-                      >
-                        <UpdateForm categoryName={category.name} setForm={(form) => this.form = form}/>
-                      </Modal>
+                <Modal
+                  title="更新分类"
+                  visible={showStatus===1}
+                  onOk={this.updateCategory}
+                  onCancel={() => {
+                    this.form.resetFields()
+                    this.setState({ showStatus: 0 })
+                  }}
+                >
+                  <UpdateForm categoryName={category.name} setForm={(form) => this.form = form}/>
+                </Modal>
+                <Modal
+                  title="添加分类"
+                  visible={showStatus===2}
+                  onOk={this.addCategory}
+                  onCancel={() => {
+                    this.form.resetFields()
+                    this.setState({ showStatus: 0 })
+                  }}
+                >
+                  <AddForm categorys={categorys} parentId={parentId} setForm={(form) => this.form = form}/>
+                </Modal>
             </Card>
         )
     }
