@@ -198,7 +198,6 @@ class ProductAddUpdate extends Component {
       } else { // 获取的二级分类列表
         return categorys // 返回值作为async函数返回的promise对象的成功的value
       }
-<<<<<<< HEAD
     }
   }
 
@@ -229,38 +228,6 @@ class ProductAddUpdate extends Component {
     } else { // 添加
       product.categoryIds = []
     }
-=======
-    }
-  }
-
-  componentWillMount () {
-    // 保存商品对象
-    this.product = this.props.location.state || {}
-    // 保存是否是更新的标识
-    this.isUpdate = !!this.product._id
-  }
-
-
-  componentDidMount () {
-    // 获取一级分类列表显示
-    this.getCategorys("0")
-  }
-
-  render() {
-    const { getFieldDecorator } = this.props.form
-
-    // 读取指定的product
-    const { product, isUpdate} = this
-    if (product._id) { // 修改
-      if (product.pCategoryId==='0') {
-        product.categoryIds = [product.categoryId]
-      } else {
-        product.categoryIds = [product.pCategoryId, product.categoryId]
-      }
-    } else { // 添加
-      product.categoryIds = []
-    }
->>>>>>> master
 
     const title = (
       <span>
@@ -335,11 +302,7 @@ class ProductAddUpdate extends Component {
             
           </Item>
           <Item label="商品图片">
-<<<<<<< HEAD
-            <PicturesWall ref={this.pwRef} imgs={product.imgs}/>
-=======
             <PictureWall ref={this.pwRef} imgs= {product.imgs} />
->>>>>>> master
           </Item>
           <Item
             label="商品详情"
