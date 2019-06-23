@@ -35,11 +35,6 @@ class ProductAddUpdate extends Component {
     this.editorRef = React.createRef()
   }
   
-<<<<<<< HEAD
-  submit = () => {
-    this.props.form.validateFields((err, values) => {
-      if (!err) {
-=======
   submit =() => {
     this.props.form.validateFields(async (err, values) => {
       if (!err) {
@@ -54,15 +49,11 @@ class ProductAddUpdate extends Component {
           categoryId = categoryIds[1]
         }
 
->>>>>>> master
         // 读取所有上传图片文件名数组
         const imgs = this.pwRef.current.getImgs()
         // 读取富文本内容(html格式字符串)
         const detail = this.editorRef.current.getDetail()
         console.log('验证通过', values, imgs, detail)
-<<<<<<< HEAD
-      }
-=======
 
         const product = {
           name,
@@ -86,7 +77,6 @@ class ProductAddUpdate extends Component {
         }
       }
        
->>>>>>> master
     })
   }
 
