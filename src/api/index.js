@@ -46,9 +46,15 @@ export const reqDeleteImg = (name) => ajax(BASE + '/manage/img/delete', {name}, 
 
 export const reqAddOrUpdateProduct = (product) => ajax(BASE + '/manage/product/'+ (product._id ? 'update' : 'add'), product, 'POST')
 
-//获取劫色列表
+//获取角色列表
+export const reqRoles = ()=> ajax(BASE+'/manage/role/list')
 
+//增加角色列表
+export const reqAddRole = (roleName)=> ajax(BASE+'/manage/role/add',{roleName},'POST')
 
+//给角色添加授权
+// 更新角色(给角色设置权限)
+export const reqUpdateRole = (role) => ajax('/manage/role/update', role, 'POST')
 /* 
 发jsonp请求获取当前天气信息
 */
